@@ -16,6 +16,7 @@ This  python script is intended to implement the Horizontal Pod Autoscaler algor
 Things completed
 - [x] Implemented HPA algo
 - [x] Implemented memory threshold
+- [x] Updated to have SSL context
 
 Improvements to be done
 - [ ] to automatically login into the vsphere cluster and switch context
