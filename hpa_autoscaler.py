@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-# python3 hpa_autoscaler.py -s jur01-vcenter01.acepod.com -u administrator@vsphere.local -p VMware1! -o 443 -mem_threshold_percent 20
+# python3 hpa_autoscaler.py -s jur01-vcenter01.acepod.com -u administrator@vsphere.local -p Password12345 -o 443 -mem_threshold_percent 20
 
 import sys
 import subprocess
