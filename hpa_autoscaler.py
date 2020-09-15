@@ -1,11 +1,18 @@
+#!/usr/bin/env python
+
+# python3 hpa_autoscaler.py -s jur01-vcenter01.acepod.com -u administrator@vsphere.local -p VMware1! -o 443 -mem_threshold_percent 20
+
 import sys
 import subprocess
+import ssl
 from pyVmomi import vim, vmodl
-from pyVim.connect import SmartConnectNoSSL, Disconnect
+from pyVim.connect import SmartConnectNoSSL, Disconnect, SmartConnect
 from pyVim.task import WaitForTask
 from tools import cli
 import pandas as pd
 import numpy as np
+
+__author__ = 'Adrian Lee'
 
 
 def setup_args():
@@ -14,6 +21,7 @@ def setup_args():
                         help='Name of the property to filter by')
     parser.add_argument('-v', '--value', default='poweredOn',
                         help='Value to filter with')
+    parser.add_argument('-mem_threshold_percent', '--mem_threshold_percent')
     return cli.prompt_for_password(parser.parse_args())
 
 
@@ -67,11 +75,16 @@ def main():
     args = setup_args()
     filter_key = "summary.config.guestId"
     value = "crxPod1Guest" 
-    memory_threshold_utilization = 0.5
-    si = SmartConnectNoSSL(host=args.host,
+    mem_threshold_input = float(args.mem_threshold_percent)/100
+    memory_threshold_utilization = mem_threshold_input
+    
+    sslContext = ssl.create_default_context(purpose=ssl.Purpose.CLIENT_AUTH)
+    sslContext.verify_mode = ssl.CERT_NONE
+    si = SmartConnect   (  host=args.host,
                            user=args.user,
                            pwd=args.password,
-                           port=args.port)
+                           port=args.port,
+                           sslContext=sslContext)
     # Start with all the VMs from container, which is easier to write than
     # PropertyCollector to retrieve them.
     vms = get_obj(si, si.content.rootFolder, [vim.VirtualMachine])
@@ -82,11 +95,18 @@ def main():
     result = pc.RetrievePropertiesEx([filter_spec], options)
     vms = filter_results(result, value)
     hpa_vms = hpa_algo(vms,memory_threshold_utilization)
+
+    current_deployment = subprocess.check_output(["kubectl", "get","deployment","-o=jsonpath={.items[*].metadata.name}"]).decode().split()
+    hpa_vms = [d for d in hpa_vms if d['pod_name'] in current_deployment]
+    print(current_deployment)
+    print(hpa_vms)
+    
     for vm in hpa_vms:
         #print(vm['pod_name'])
         deployment = vm['pod_name']
         replica_count = "--replicas="+str(vm['desired_replicas'])
         subprocess.call(["kubectl","scale","deployments",deployment,replica_count])
+    
     
 
     Disconnect(si)
