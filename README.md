@@ -3,6 +3,8 @@
 ## Summary and steps ##
 This  python script is intended to implement the Horizontal Pod Autoscaler algorithm for podVM for the vSphere 7.0 with Kubernetes. The implemetation follows the algorithm from the official Kubernetes documents : https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/ 
 
+The issue at hand is that with the release of vSphere 7 with Kubernetes, horitzonal pod autoscaling is still being in development. As such, to allow podVMs to be able to automatically scale, this python script was written to address that. For now this script takes in only memory utilization and is being improved for CPU utilization in the future. 
+
 1) git clone this repo
 2) pip install pyvmomi
 3) Do a 'kubectl vsphere login' to login into your Supervisor Cluster for vSphere 7.0 with Kubernetes (https://docs.vmware.com/en/VMware-vSphere/7.0/vsphere-esxi-vcenter-server-70-vsphere-with-kubernetes-guide.pdf: Page 84) 
