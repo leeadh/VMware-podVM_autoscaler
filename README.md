@@ -19,7 +19,7 @@ python3 hpa_autoscaler.py -s jur01-vcenter01.acepod.com -u administrator@vsphere
 ```
 - Example 2: if you want to connect insecurely to the vSphere hosts: 
 ```
-python3 hpa_autoscaler.py -s jur01-vcenter01.acepod.com -u administrator@vsphere.local -p Password12345 -o 443 -mem_threshold_percent 20 -secure yes
+python3 hpa_autoscaler.py -s jur01-vcenter01.acepod.com -u administrator@vsphere.local -p Password12345 -o 443 -mem_threshold_percent 20 -secure no
 ```
 #### Note ####: Values which you can input into memory threshold : from 0 to 100. 
 
