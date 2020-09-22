@@ -22,6 +22,7 @@ def setup_args():
     parser.add_argument('-v', '--value', default='poweredOn',
                         help='Value to filter with')
     parser.add_argument('-mem_threshold_percent', '--mem_threshold_percent')
+    parser.add_argument('-secure','--secure')
     return cli.prompt_for_password(parser.parse_args())
 
 
@@ -77,17 +78,27 @@ def main():
     value = "crxPod1Guest" 
     mem_threshold_input = float(args.mem_threshold_percent)/100
     memory_threshold_utilization = mem_threshold_input
+    secure = args.secure
     
+
     #sslContext = ssl.create_default_context(purpose=ssl.Purpose.CLIENT_AUTH)
-    sslContext = ssl.SSLContext(ssl.PROTOCOL_TLSv1_2)
-    sslContext.verify_mode = ssl.CERT_REQUIRED
-    sslContext.check_hostname = True
-    sslContext.load_default_certs()
-    si = SmartConnect   (  host=args.host,
-                           user=args.user,
-                           pwd=args.password,
-                           port=args.port,
-                           sslContext=sslContext)
+
+    if secure == "yes":
+        sslContext = ssl.SSLContext(ssl.PROTOCOL_TLSv1_2)
+        sslContext.verify_mode = ssl.CERT_REQUIRED
+        sslContext.check_hostname = True
+        sslContext.load_default_certs()
+        si = SmartConnect   (  host=args.host,
+                            user=args.user,
+                            pwd=args.password,
+                            port=args.port,
+                            sslContext=sslContext)
+    else:
+        si = SmartConnect   (  host=args.host,
+                            user=args.user,
+                            pwd=args.password,
+                            port=args.port)
+                            
     # Start with all the VMs from container, which is easier to write than
     # PropertyCollector to retrieve them.
     vms = get_obj(si, si.content.rootFolder, [vim.VirtualMachine])
