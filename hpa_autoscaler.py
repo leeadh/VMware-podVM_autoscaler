@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-# python3 hpa_autoscaler.py -s jur01-vcenter01.acepod.com -u administrator@vsphere.local -p Password12345 -o 443 -mem_threshold_percent 20
+# python3 hpa_autoscaler.py -s jur01-vcenter01.acepod.com -u administrator@vsphere.local -p VMware1! -o 443 -mem_threshold_percent 20
 
 import sys
 import subprocess
@@ -78,8 +78,11 @@ def main():
     mem_threshold_input = float(args.mem_threshold_percent)/100
     memory_threshold_utilization = mem_threshold_input
     
-    sslContext = ssl.create_default_context(purpose=ssl.Purpose.CLIENT_AUTH)
-    sslContext.verify_mode = ssl.CERT_NONE
+    #sslContext = ssl.create_default_context(purpose=ssl.Purpose.CLIENT_AUTH)
+    sslContext = ssl.SSLContext(ssl.PROTOCOL_TLSv1_2)
+    sslContext.verify_mode = ssl.CERT_REQUIRED
+    sslContext.check_hostname = True
+    sslContext.load_default_certs()
     si = SmartConnect   (  host=args.host,
                            user=args.user,
                            pwd=args.password,
