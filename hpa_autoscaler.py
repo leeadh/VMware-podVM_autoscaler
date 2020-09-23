@@ -91,7 +91,7 @@ def main():
 
     #sslContext = ssl.create_default_context(purpose=ssl.Purpose.CLIENT_AUTH)
 
-    if secure == "yes":
+    if secure == "yes" or not secure:
         sslContext = ssl.SSLContext(ssl.PROTOCOL_TLSv1_2)
         sslContext.verify_mode = ssl.CERT_REQUIRED
         sslContext.check_hostname = True
@@ -102,7 +102,7 @@ def main():
                             port=os.getenv('VC_PORT'),
                             sslContext=sslContext)
     else:
-        si = SmartConnect   (  host=os.getenv('VC_HOST'),
+        si = SmartConnectNoSSL   (  host=os.getenv('VC_HOST'),
                             user=os.getenv('VC_USERNAME'),
                             pwd=os.getenv('VC_PASSWRD'),
                             port=os.getenv('VC_PORT'))
