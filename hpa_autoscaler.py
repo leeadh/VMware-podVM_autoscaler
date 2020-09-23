@@ -1,8 +1,14 @@
 #!/usr/bin/env python
 
-# python3 hpa_autoscaler.py -s jur01-vcenter01.acepod.com -u administrator@vsphere.local -p VMware1! -o 443 -mem_threshold_percent 20
+# export VC_PASSWRD=XXXX
+# export VC_USERNAME=administrator@vsphere.local
+# export VC_HOST=jur01-vcenter01.acepod.com
+# export VC_PORT=443
+# python3 hpa_autoscaler.py  -mem_threshold_percent 20 -secure yes
+
 
 import sys
+import os
 import subprocess
 import ssl
 from pyVmomi import vim, vmodl
@@ -21,8 +27,10 @@ def setup_args():
                         help='Name of the property to filter by')
     parser.add_argument('-v', '--value', default='poweredOn',
                         help='Value to filter with')
-    parser.add_argument('-mem_threshold_percent', '--mem_threshold_percent')
-    parser.add_argument('-secure','--secure')
+    parser.add_argument('-mem_threshold_percent', '--mem_threshold_percent', 
+                        help='Set your desired memory threshold from 0-20')
+    parser.add_argument('-secure','--secure', 
+                        help='Set S if you want to connect securely')
     return cli.prompt_for_password(parser.parse_args())
 
 
@@ -88,17 +96,17 @@ def main():
         sslContext.verify_mode = ssl.CERT_REQUIRED
         sslContext.check_hostname = True
         sslContext.load_default_certs()
-        si = SmartConnect   (  host=args.host,
-                            user=args.user,
-                            pwd=args.password,
-                            port=args.port,
+        si = SmartConnect   (  host=os.getenv('VC_HOST'),
+                            user=os.getenv('VC_USERNAME'),
+                            pwd=os.getenv('VC_PASSWRD'),
+                            port=os.getenv('VC_PORT'),
                             sslContext=sslContext)
     else:
-        si = SmartConnect   (  host=args.host,
-                            user=args.user,
-                            pwd=args.password,
-                            port=args.port)
-                            
+        si = SmartConnect   (  host=os.getenv('VC_HOST'),
+                            user=os.getenv('VC_USERNAME'),
+                            pwd=os.getenv('VC_PASSWRD'),
+                            port=os.getenv('VC_PORT'))
+
     # Start with all the VMs from container, which is easier to write than
     # PropertyCollector to retrieve them.
     vms = get_obj(si, si.content.rootFolder, [vim.VirtualMachine])
