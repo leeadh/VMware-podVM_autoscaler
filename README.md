@@ -11,14 +11,14 @@ To run this script as a standalone
 2) pip install pyvmomi
 3) Do a 'kubectl vsphere login' to login into your Supervisor Cluster for vSphere 7.0 with Kubernetes (https://docs.vmware.com/en/VMware-vSphere/7.0/vsphere-esxi-vcenter-server-70-vsphere-with-kubernetes-guide.pdf: Page 84) 
 4) Choose the context which you want by doing 'kubectl config use-context <YOUR_NAMEPSACE>' (https://docs.vmware.com/en/VMware-vSphere/7.0/vsphere-esxi-vcenter-server-70-vsphere-with-kubernetes-guide.pdf: Page 84)
-4) export these values
+5) export these values
 ```
 # export VC_PASSWRD=XXXX
 # export VC_USERNAME=administrator@vsphere.local
 # export VC_HOST=jur01-vcenter01.acepod.com
 # export VC_PORT=443
 ```
-5) python3 hpa_autoscaler.py  -mem_threshold_percent <MEMORY_THRESHOLD> -secure <YES_OR_NO> 
+6) python3 hpa_autoscaler.py  -mem_threshold_percent <MEMORY_THRESHOLD> -secure <YES_OR_NO> 
 
 #### Notes ####
 - Example 1: if you want to connect securely to the vSphere hosts: 
