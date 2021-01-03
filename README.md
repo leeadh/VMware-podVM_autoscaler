@@ -18,22 +18,22 @@ To run this script as a standalone
 # export VC_HOST=jur01-vcenter01.acepod.com
 # export VC_PORT=443
 ```
-6) python3 hpa_autoscaler.py  -mem_threshold_percent <MEMORY_THRESHOLD> -secure <YES_OR_NO> 
+6) python3 vSphere_Pod_Autoscaler.py -mem_threshold_percent <MEMORY_THRESHOLD> -secure <YES_OR_NO> 
 
 #### Notes ####
 - Example 1: if you want to connect securely to the vSphere hosts: 
 
 ```
-python3 hpa_autoscaler.py  -mem_threshold_percent 20 -secure yes
+python3 vSphere_Pod_Autoscaler.py -mem_threshold_percent 20 -secure yes
 ```
 - Example 2: if you want to connect insecurely to the vSphere hosts: 
 ```
-python3 hpa_autoscaler.py  -mem_threshold_percent 20 -secure no 
+python3 vSphere_Pod_Autoscaler.py -mem_threshold_percent 20 -secure no 
 ```
 OR 
 
 ```
-python3 hpa_autoscaler.py  -mem_threshold_percent 20
+python3 vSphere_Pod_Autoscaler.py -mem_threshold_percent 20
 ```
 
 #### Note ####: Values which you can input into memory threshold : from 0 to 100. 
