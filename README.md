@@ -1,4 +1,4 @@
-# podVM_autoscaler
+# vSphere Pod Autoscaler
 
 ## Summary and steps ##
 This  python script is intended to implement the Horizontal Pod Autoscaler algorithm for podVM for the vSphere 7.0 with Kubernetes. The implemetation follows the algorithm from the official Kubernetes documents : https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/ 
