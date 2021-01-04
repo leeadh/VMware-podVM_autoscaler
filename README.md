@@ -46,4 +46,4 @@ Things completed
 
 Improvements to be done
 - [ ] to automatically login into the vsphere cluster and switch context
-- [ ] to create a container of this python script
+- [ ] to create a container of the vSphere Pod Autoscaler
